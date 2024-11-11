@@ -1,0 +1,25 @@
+services:
+    frontend:
+        image: node:22
+        ports:
+            - "5173:5173"
+        volumes:
+            - ./frontend:/app
+        working_dir: /app
+        env_file:
+            - .env
+        environment:
+            TZ: Asia/Kuala_Lumpur
+
+    api:
+        image: node:22
+        ports:
+            - "8080:8080"
+        volumes:
+            - ./api:/app
+        working_dir: /app
+        env_file:
+            - .env
+        environment:
+            PORT: ${API_PORT}
+            TZ: Asia/Kuala_Lumpur

@@ -1,0 +1,4 @@
+*.env
+nginx/logs
+
+node_modules

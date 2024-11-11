@@ -1,0 +1,20 @@
+services:
+    hydrate:
+        image: grafana/k6
+        volumes:
+            - ./k6:/scripts
+        entrypoint: ["k6", "run", "/scripts/load-test.js"]
+        environment:
+            BASE_URL: http://nginx:8080/api/v1/tasks
+            K6_VUS: 100 # Number of virtual users
+            K6_ITERATIONS: 10000 # Total number of requests
+
+    test-create-task:
+        image: grafana/k6
+        volumes:
+            - ./k6:/scripts
+        entrypoint: ["k6", "run", "/scripts/load-test.js"]
+        environment:
+            BASE_URL: http://nginx:8080/api/v1/tasks
+            K6_VUS: 100 # Number of virtual users
+            K6_ITERATIONS: 100000 # Total number of requests

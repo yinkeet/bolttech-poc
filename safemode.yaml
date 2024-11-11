@@ -1,0 +1,13 @@
+services:
+    frontend:
+        extends:
+            file: common.yaml
+            service: frontend
+        command: /bin/bash
+
+    api:
+        image: node:22
+        extends:
+            file: common.yaml
+            service: api
+        command: /bin/bash
