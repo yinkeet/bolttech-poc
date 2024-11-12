@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS policy (
     status ENUM('active', 'expired') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES customer(id)
+    FOREIGN KEY (customer_id) REFERENCES customer(id),
     FOREIGN KEY (device_id) REFERENCES device(id)
 );
 
