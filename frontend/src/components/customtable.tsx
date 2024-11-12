@@ -18,7 +18,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[]
 }
 
-export function TaskTable<TData, TValue>({
+export function CustomTable<TData, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {

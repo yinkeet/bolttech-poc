@@ -37,20 +37,20 @@ const formSchema = z.object({
     due_date: z.coerce.date(),
 })
 
-export interface TaskDialogProps {
+export interface CustomDialogProps {
     triggerTitle: string;
     title: string;
-    onSubmit: TaskDialogSubmitCallbackProps;
+    onSubmit: CustomDialogSubmitCallbackProps;
     defaultName?: string;
     defaultDescription?: string;
     defaultDueDate?: Date;
 }
 
-export interface TaskDialogSubmitCallbackProps {
+export interface CustomDialogSubmitCallbackProps {
     (name: string, description: string, due_date: Date): Promise<void>
 }
 
-export function TaskDialog({ triggerTitle, title, onSubmit, defaultName, defaultDescription, defaultDueDate }: TaskDialogProps) {
+export function CustomDialog({ triggerTitle, title, onSubmit, defaultName, defaultDescription, defaultDueDate }: CustomDialogProps) {
     const [open, setOpen] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
