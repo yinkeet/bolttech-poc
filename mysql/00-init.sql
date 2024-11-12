@@ -73,7 +73,6 @@ CREATE TABLE IF NOT EXISTS claim (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (policy_id) REFERENCES policy(id),
-    FOREIGN KEY (device_id) REFERENCES device(id),
     FOREIGN KEY (coverage_id) REFERENCES coverage(id)
 );
 
