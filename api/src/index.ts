@@ -1,29 +1,28 @@
-import express from 'express';
-import { Pool } from 'pg';
+import express, { Request, Response } from 'express';
+import mysql from 'mysql2/promise';
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-// Set up PostgreSQL client
-// const pool = new Pool({
-//   host: 'postgres',
-//   user: 'postgres',
-//   password: 'postgres',
-//   database: 'my_database',
-//   port: 5432
-// });
+const pool = mysql.createPool({
+  host: process.env.MYSQL_HOST || 'db',
+  user: process.env.MYSQL_USER || 'user',
+  password: process.env.MYSQL_PASSWORD || 'password',
+  database: process.env.MYSQL_DATABASE || 'dev',
+});
 
-// Example route to get data from a table
-app.get('/api/v1/claims', async (req, res) => {
+app.get('/healthz', (req: Request, res: Response) => {
+  res.status(200).json({
+    uptime: process.uptime()
+  });
+});
+
+app.get('/api/v1/claims', async (req: Request, res: Response) => {
   try {
-    res.json({
-        'test': '123'
-    })
-    // const result = await pool.query('SELECT * FROM my_table');
-    // res.json(result.rows);
+    const [rows] = await pool.query('SELECT * FROM customer');
+    res.json(rows);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Database query failed' });
   }
 });
 
