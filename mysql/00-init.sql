@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS policy (
     premium DECIMAL(10, 2),
     start_date DATE NOT NULL,
     end_date DATE,
-    status ENUM('active', 'expired', 'canceled') DEFAULT 'active',
+    status ENUM('active', 'expired') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES customer(id)
@@ -64,7 +64,6 @@ CREATE TABLE IF NOT EXISTS policy_coverage (
 CREATE TABLE IF NOT EXISTS claim (
     id INT AUTO_INCREMENT PRIMARY KEY,
     policy_id INT,
-    device_id INT,
     coverage_id INT,
     claim_number VARCHAR(50) NOT NULL UNIQUE,
     claim_date DATE NOT NULL,
