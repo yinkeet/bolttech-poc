@@ -36,9 +36,9 @@ services:
             - |
                 if [ ! -d "node_modules" ]
                 then
-                    npm install
+                    yarn install
                 fi
-                npm run dev
+                yarn run dev
 
     db:
         image: mysql:8.0
