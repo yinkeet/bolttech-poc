@@ -2,15 +2,14 @@ INSERT INTO customer (first_name, last_name, date_of_birth, address, phone_numbe
 VALUES 
     ('John', 'Doe', '1985-03-15', '123 Maple Street', '123-456-7890', 'john.doe@example.com'),
     ('Jane', 'Smith', '1990-07-20', '456 Oak Avenue', '234-567-8901', 'jane.smith@example.com'),
-    ('Alice', 'Johnson', '1978-12-11', '789 Pine Lane', '345-678-9012', 'alice.johnson@example.com'),
-    ('Bob', 'Brown', '1982-06-18', '101 Elm Drive', '456-789-0123', 'bob.brown@example.com');
+    ('Alice', 'Johnson', '1978-12-11', '789 Pine Lane', '345-678-9012', 'alice.johnson@example.com');
 
 INSERT INTO device (customer_id, type, brand, model, serial_number, purchase_date, value)
 VALUES 
     (1, 'smartphone', 'Apple', 'iPhone 13', 'SN12345A', '2024-01-10', 999.99),
     (1, 'tablet', 'Samsung', 'Galaxy Tab S7', 'SN23456B', '2022-11-20', 750.00),
     (2, 'smartphone', 'Google', 'Pixel 7', 'SN34567C', '2024-04-15', 899.00),
-    (4, 'smartphone', 'Apple', 'iPhone 15', 'SN45678D', '2021-12-01', 799.99);
+    (3, 'smartphone', 'Apple', 'iPhone 15', 'SN45678D', '2021-12-01', 799.99);
 
 INSERT INTO policy (customer_id, device_id, policy_number, premium, start_date, end_date, status)
 VALUES 
