@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS claim (
     policy_id INT,
     coverage_id INT,
     claim_number VARCHAR(50) NOT NULL UNIQUE,
-    claim_date DATE NOT NULL,
+    claim_date DATE NOT NULL DEFAULT (CURRENT_DATE),
     amount_claimed DECIMAL(10, 2),
     amount_approved DECIMAL(10, 2),
     status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
