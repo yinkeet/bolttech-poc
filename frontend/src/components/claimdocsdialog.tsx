@@ -25,7 +25,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
-import { File } from "lucide-react"
+import { File, Plus } from "lucide-react"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -111,6 +111,12 @@ export function ClaimDocsDialog({ claimId }: ClaimDocsDialogProps) {
                 <DialogHeader>
                     <DialogTitle>Documents</DialogTitle>
                 </DialogHeader>
+                <div className='flex space-x-2'>
+                    <Input type="file" className='w-auto' onChange={(event) => {
+                        console.log(event.target.files && event.target.files[0])
+                    }}/>
+                    <Button variant="outline" size="icon"><Plus /></Button>
+                </div>
                 <CustomTable columns={columns} data={docs} />
                 {/* <Form {...form}>
                     <form onSubmit={form.handleSubmit(_OnSubmit)} className="space-y-8">
