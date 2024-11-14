@@ -165,7 +165,7 @@ export function CreateClaimDialog({ onClaimCreated }: CreateClaimDialogProps) {
 
             if (!response.ok) {
                 const data = await response.json() as ErrorResponse;
-                setAlertDialogMessage(data.messaage)
+                setAlertDialogMessage(data.message)
                 setAlertDialogOpen(true);
                 if (data.error) console.error(data.error)
                 return
