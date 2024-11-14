@@ -23,7 +23,23 @@ function App() {
   const columns: ColumnDef<Claim>[] = [
     {
       accessorKey: 'claim_number',
-      header: 'No.',
+      header: 'Claim',
+    },
+    {
+      accessorKey: 'policy_number',
+      header: 'Policy',
+    },
+    {
+      accessorKey: 'customer',
+      header: 'Customer',
+    },
+    {
+      accessorKey: 'device',
+      header: 'Device',
+    },
+    {
+      accessorKey: 'coverage_name',
+      header: 'Coverage',
     },
     {
       accessorKey: 'claim_date',
