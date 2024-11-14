@@ -39,8 +39,8 @@ export const createClaimDocument = async (req: Request, res: Response) => {
 
     try {
         // Save metadata to MySQL database
-        const query = `INSERT INTO claim_document (claim_id, type, path) VALUES (?, ?, ?)`;
-        const [result] = await pool.execute<ResultSetHeader>(query, [claimId, mimetype, `/claims/${claimId}/${filename}`])
+        const query = `INSERT INTO claim_document (claim_id, type, path, original_filename) VALUES (?, ?, ?)`;
+        const [result] = await pool.execute<ResultSetHeader>(query, [claimId, mimetype, `/claims/${claimId}/${filename}`, originalname])
 
         res.status(201).json({
             message: 'File uploaded and metadata saved',
