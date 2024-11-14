@@ -30,7 +30,7 @@ export const getCustomerDevicePolicy = async (req: Request, res: Response) => {
     try {
         const query = `
         SELECT 
-            policy.id AS id,
+            policy_id,
             coverage_id,
             policy_number, 
             premium, 
@@ -62,24 +62,30 @@ export const getCustomerDevicePolicy = async (req: Request, res: Response) => {
     }
 };
 
-export const getCustomerDevicePolicyCoverages = async (req: Request, res: Response) => {
-    const { customerId, deviceId, policyId } = req.params;
+// export const getCustomerDevicePolicyCoverages = async (req: Request, res: Response) => {
+//     const { customerId, deviceId, policyId } = req.params;
 
-    try {
-        const [rows] = await pool.query<RowDataPacket[]>('SELECT id, policy_number, premium, start_date, end_date, status FROM policy_coverage JOIN coverage ON coverage_id = id WHERE customer_id = ? AND device_id = ? AND policy_id = ?', [customerId, deviceId, policyId]);
+//     try {
+//         const query = `
+//         SELECT policy_id, coverage_id, policy_number, premium, start_date, end_date, status 
+//         FROM policy_coverage 
+//         JOIN coverage ON coverage_id = id 
+//         WHERE customer_id = ? AND device_id = ? AND policy_id = ?
+//         `;
+//         const [rows] = await pool.query<RowDataPacket[]>(query, [customerId, deviceId, policyId]);
         
-        if (rows.length == 0) {
-            res.status(404).json({
-                message: 'Policy not found'
-            });
-            return;
-        }
+//         if (rows.length == 0) {
+//             res.status(404).json({
+//                 message: 'Policy not found'
+//             });
+//             return;
+//         }
 
-        res.json(rows);
-    } catch (error) {
-        res.status(500).json({
-            message: 'Database query failed',
-            error: error
-        });
-    }
-};
+//         res.json(rows);
+//     } catch (error) {
+//         res.status(500).json({
+//             message: 'Database query failed',
+//             error: error
+//         });
+//     }
+// };
