@@ -68,12 +68,13 @@ CREATE TABLE IF NOT EXISTS claim (
     claim_number VARCHAR(50) NOT NULL UNIQUE,
     claim_date DATE NOT NULL DEFAULT (CURRENT_DATE),
     amount_claimed DECIMAL(10, 2),
-    amount_approved DECIMAL(10, 2),
+    amount_approved DECIMAL(10, 2) DEFAULT '0.00',
     status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (policy_id) REFERENCES policy(id),
-    FOREIGN KEY (coverage_id) REFERENCES coverage(id)
+    FOREIGN KEY (coverage_id) REFERENCES coverage(id),
+    UNIQUE KEY unique_policy_coverage (policy_id, coverage_id)
 );
 
 CREATE TABLE IF NOT EXISTS claim_document (
