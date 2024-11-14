@@ -9,8 +9,10 @@ import { Toaster } from "@/components/ui/toaster"
 import { CustomAlertDialog } from "@/components/customalertdialog";
 import { format } from "date-fns";
 import { CreateClaimDialog } from "@/components/createclaimdialog";
+import { ClaimDocsDialog } from "./components/claimdocsdialog";
 
 interface Claim {
+  id: number;
   claim_number: string;
   claim_date: string;
   amount_claimed: string;
@@ -63,12 +65,11 @@ function App() {
     {
       accessorKey: 'action',
       header: 'Action',
-      // cell: ({ row }) => {
-      //   // Edit button that will trigger a dialog
-      //   return (
-      //     <TaskDialog triggerTitle="Edit" title="Edit task" onSubmit={(name, description, due_date) => onEditTaskSubmit(row.original.uuid, name, description, due_date)} defaultName={row.getValue('name')} defaultDescription={row.getValue('description')} defaultDueDate={row.getValue('due_date')} />
-      //   )
-      // }
+      cell: ({ row }) => {
+        return (
+          <ClaimDocsDialog claimId={row.original.id.toString()}/>
+        )
+      }
     },
   ];
 
