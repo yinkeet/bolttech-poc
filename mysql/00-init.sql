@@ -82,6 +82,7 @@ CREATE TABLE IF NOT EXISTS claim_document (
     claim_id INT,
     type VARCHAR(50),
     path VARCHAR(255),
+    original_filename VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (claim_id) REFERENCES claim(id)
