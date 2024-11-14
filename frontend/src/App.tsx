@@ -2,22 +2,13 @@ import { useEffect, useState } from "react";
 import './App.css'
 import { CustomTable } from '@/components/customtable'
 import { ColumnDef } from "@tanstack/react-table";
-import { Button } from './components/ui/button';
-import { Badge } from "@/components/ui/badge";
 import { CustomDialog, CustomDialogSubmitCallbackProps } from "@/components/customdialog";
 import { formatISO } from "date-fns";
 import { useToast } from "@/components/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
-import { CustomAlertDialog } from "./components/customalertdialog";
-import { Input } from "./components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { CustomAlertDialog } from "@/components/customalertdialog";
 import { format } from "date-fns";
+import { CreateClaimDialog } from "@/components/createclaimdialog";
 
 interface Claim {
   claim_number: string;
@@ -163,7 +154,7 @@ function App() {
       <div className="hidden h-full flex-1 flex-col space-y-2 p- md:flex">
         <div className='flex'>
           {/* Create button */}
-          <CustomDialog triggerTitle="Create" title="Create claim" onSubmit={onCreateClaimSubmit} />
+          <CreateClaimDialog onClaimCreated={() => setRefresh(refresh+1)} />
           <div className='flex-1'></div>
         </div>
         {/* Tasks list */}
