@@ -80,7 +80,15 @@ export const createClaim = async (req: Request, res: Response) => {
             message: 'Claim created successfully',
             claimId: result.insertId
         });
-    } catch (error) {
+    } catch (error: any) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            res.status(409).json({
+                message: 'Claim already exists',
+                error: error
+            });
+            return;
+        }
+
         res.status(500).json({
             message: 'Failed to create claim',
             error: error
