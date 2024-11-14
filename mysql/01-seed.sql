@@ -50,6 +50,6 @@ VALUES
 
 INSERT INTO claim_document (claim_id, type, path)
 VALUES 
-    (1, 'image/png', '/C12345/bfef0e07-29b4-486a-951d-30ea528eb239.png'),
-    (2, 'application/pdf', '/C23456/159b9fcd-1421-4b79-a24e-49260ee090e4.pdf'),
-    (3, 'image/jpg', '/C34567/2fb5dbe0-f611-430f-9b35-085d5d14e563.jpeg');
+    (1, 'image/png', '/1/bfef0e07-29b4-486a-951d-30ea528eb239.png'),
+    (2, 'application/pdf', '/2/159b9fcd-1421-4b79-a24e-49260ee090e4.pdf'),
+    (3, 'image/jpg', '/3/2fb5dbe0-f611-430f-9b35-085d5d14e563.jpeg');
