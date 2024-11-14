@@ -36,7 +36,9 @@ export const getClaimDocs = async (req: Request, res: Response) => {
         SELECT 
             id,
             type, 
-            path
+            path,
+            original_filename,
+            created_at
         FROM claim_document
         WHERE claim_id = ?
         `
