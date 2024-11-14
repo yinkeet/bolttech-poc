@@ -68,8 +68,8 @@ function App() {
   // Tasks
   const [data, setData] = useState<Claim[]>([]);
   // Task pages
-  const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [totalPages, setTotalPages] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   // Task refresh
   const [refresh, setRefresh] = useState(0);
 
@@ -87,16 +87,15 @@ function App() {
 
     const newData = await result.json() as Claim[]
     setData(newData)
-    if (newData.length && currentPage == 0) setCurrentPage(1)
   };
   useEffect(() => {
     fetchData();
-  }, [currentPage, refresh]);
+  }, [refresh]);
 
   // Create task handler
-  const onCreateTaskSubmit: CustomDialogSubmitCallbackProps = async (name, description, due_date) => {
+  const onCreateClaimSubmit: CustomDialogSubmitCallbackProps = async (name, description, due_date) => {
     try {
-      const response = await fetch('http://localhost:8080/api/v1/tasks', {
+      const response = await fetch('http://localhost:8080/api/v1/claims', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -164,37 +163,12 @@ function App() {
       <div className="hidden h-full flex-1 flex-col space-y-2 p- md:flex">
         <div className='flex'>
           {/* Create button */}
-          <CustomDialog triggerTitle="Create" title="Create task" onSubmit={onCreateTaskSubmit} />
+          <CustomDialog triggerTitle="Create" title="Create claim" onSubmit={onCreateClaimSubmit} />
           <div className='flex-1'></div>
         </div>
         {/* Tasks list */}
         <div className="text-left">
           <CustomTable columns={columns} data={data} />
-        </div>
-        <div className="flex">
-          <div className="flex-1"></div>
-          {/* Pagination */}
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setCurrentPage(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </Button>
-            <div className="flex">
-              {currentPage}/{totalPages}
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setCurrentPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </Button>
-          </div>
         </div>
       </div>
     </>
