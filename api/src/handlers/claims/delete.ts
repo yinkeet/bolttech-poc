@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { pool } from '../../common/db';
-import { ResultSetHeader, RowDataPacket } from 'mysql2';
+import { RowDataPacket } from 'mysql2';
 import fs from 'fs';
 
 export const deleteClaimDoc = async (req: Request, res: Response) => {
