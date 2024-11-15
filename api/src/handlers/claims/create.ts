@@ -44,10 +44,19 @@ export const createClaim = async (req: Request, res: Response) => {
             return;
         }
 
-        const { coverage_limit } = rows[0]
+        const { coverage_limit, end_date } = rows[0]
+        // Over limit
         if (amount_claimed > coverage_limit) {
             res.status(404).json({
                 message: 'Amount claimed more than coverage limit'
+            });
+            return;
+        }
+
+        // Expired
+        if (Date.now() > Date.parse(end_date)) {
+            res.status(404).json({
+                message: 'Coverage expired'
             });
             return;
         }
