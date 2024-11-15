@@ -9,7 +9,8 @@ import { Toaster } from "@/components/ui/toaster"
 import { CustomAlertDialog } from "@/components/customalertdialog";
 import { format } from "date-fns";
 import { CreateClaimDialog } from "@/components/createclaimdialog";
-import { ClaimDocsDialog } from "./components/claimdocsdialog";
+import { ClaimDocsDialog } from "@/components/claimdocsdialog";
+import { EditClaimDialog} from "@/components/editclaimdialog";
 
 interface Claim {
   id: number;
@@ -67,18 +68,17 @@ function App() {
       header: 'Action',
       cell: ({ row }) => {
         return (
-          <ClaimDocsDialog claimId={row.original.id.toString()}/>
+          <div className="flex space-x-2">
+            <EditClaimDialog claimId={row.original.id} amountClaimed={row.original.amount_claimed} onClaimUpdated={() => setRefresh(refresh+1)}/>
+            <ClaimDocsDialog claimId={row.original.id}/>
+          </div>
         )
       }
     },
   ];
 
-  // Tasks
+  // Claims
   const [data, setData] = useState<Claim[]>([]);
-  // Task pages
-  // const [totalPages, setTotalPages] = useState(1);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // Task refresh
   const [refresh, setRefresh] = useState(0);
 
   // Alert dialog
