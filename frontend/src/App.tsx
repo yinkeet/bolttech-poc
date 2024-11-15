@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import './App.css'
 import { CustomTable } from '@/components/customtable'
 import { ColumnDef } from "@tanstack/react-table";
-import { CustomDialog, CustomDialogSubmitCallbackProps } from "@/components/customdialog";
 import { formatISO } from "date-fns";
 import { useToast } from "@/components/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
@@ -100,40 +99,8 @@ function App() {
     fetchData();
   }, [refresh]);
 
-  // Edit task handler
-  const onEditTaskSubmit = async (uuid: string, name: string, description: string, due_date: Date) => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/v1/tasks/${uuid}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-          description: description,
-          due_date: formatISO(due_date)
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        setAlertDialogMessage(JSON.stringify(data, null, 2))
-        setAlertDialogOpen(true);
-        return
-      }
-
-      setRefresh(refresh + 1)
-      toast({
-        title: "Task edited"
-      })
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
-
   return (
     <>
-      <CustomAlertDialog title="Error" message={alertDialogMessage} open={alertDialogOpen} onOpenChange={setAlertDialogOpen} />
       <Toaster />
       <div className="hidden h-full flex-1 flex-col space-y-2 p- md:flex">
         <div className='flex'>
