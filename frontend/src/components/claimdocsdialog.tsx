@@ -36,6 +36,7 @@ import { CustomTable } from '@/components/customtable'
 import { CustomAlertDialog } from '@/components/customalertdialog'
 import { useToast } from "@/components/hooks/use-toast"
 import { ErrorResponse } from '@/models/errorresponse'
+import { ConfirmationDialog } from '@/components/confirmationdialog';
 
 
 export interface ClaimDocsDialogProps {
@@ -76,10 +77,18 @@ export function ClaimDocsDialog({ claimId }: ClaimDocsDialogProps) {
             accessorKey: 'id',
             header: 'Action',
             cell: ({ row }) => {
+                const [open, setOpen] = useState(false)
                 return (
-                    <Button variant="outline" size="icon" onClick={() => {
-                        
-                    }}><CircleX /></Button>
+                    <>
+                        <ConfirmationDialog title='Confirm Delete?' message='Are you sure you want to delete this?' open={open} onOpenChange={setOpen} onAction={(confirm) => {
+                            if (confirm) {
+                                
+                            }
+                        }}/>
+                        <Button variant="outline" size="icon" onClick={() => {
+                            setOpen(true)
+                        }}><CircleX /></Button>
+                    </>
                 )
             }
         },
