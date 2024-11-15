@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import './App.css'
 import { CustomTable } from '@/components/customtable'
 import { ColumnDef } from "@tanstack/react-table";
-import { formatISO } from "date-fns";
-import { useToast } from "@/components/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
-import { CustomAlertDialog } from "@/components/customalertdialog";
 import { format } from "date-fns";
 import { CreateClaimDialog } from "@/components/createclaimdialog";
 import { ClaimDocsDialog } from "@/components/claimdocsdialog";
@@ -79,13 +76,6 @@ function App() {
   // Claims
   const [data, setData] = useState<Claim[]>([]);
   const [refresh, setRefresh] = useState(0);
-
-  // Alert dialog
-  const [alertDialogMessage, setAlertDialogMessage] = useState("");
-  const [alertDialogOpen, setAlertDialogOpen] = useState(false);
-
-  // Toast
-  const { toast } = useToast();
 
   // Task list
   const fetchData = async () => {
