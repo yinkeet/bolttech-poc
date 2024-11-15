@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import {
     Dialog,
     DialogContent,
@@ -25,20 +26,17 @@ import { Calendar } from "@/components/ui/calendar"
 import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
-import { File, Plus } from "lucide-react"
+import { File, Plus, CircleX } from "lucide-react"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 
 import { z } from "zod"
 import { ColumnDef } from '@tanstack/react-table'
 import { CustomTable } from '@/components/customtable'
+import { CustomAlertDialog } from '@/components/customalertdialog'
+import { useToast } from "@/components/hooks/use-toast"
+import { ErrorResponse } from '@/models/errorresponse'
 
-const formSchema = z.object({
-    // name: z.string().min(1).max(255),
-    // description: z.string().min(1),
-    // due_date: z.coerce.date(),
-})
 
 export interface ClaimDocsDialogProps {
     claimId: string;
@@ -74,11 +72,31 @@ export function ClaimDocsDialog({ claimId }: ClaimDocsDialogProps) {
             accessorKey: 'created_at',
             header: 'Uploaded At',
         },
+        {
+            accessorKey: 'id',
+            header: 'Action',
+            cell: ({ row }) => {
+                return (
+                    <Button variant="outline" size="icon" onClick={() => {
+                        
+                    }}><CircleX /></Button>
+                )
+            }
+        },
     ];
 
     const [open, setOpen] = useState(false);
     const [refresh, setRefresh] = useState(0);
     const [docs, setDocs] = useState<Doc[]>([]);
+
+    // Alert dialog
+    const [alertDialogTitle, setAlertDialogTitle] = useState("");
+    const [alertDialogMessage, setAlertDialogMessage] = useState("");
+    const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+    
+    // Doc upload
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const { register, reset } = useForm();
 
     const fetchData = async () => {
         try {
@@ -95,102 +113,66 @@ export function ClaimDocsDialog({ claimId }: ClaimDocsDialogProps) {
         fetchData();
     }, [refresh]);
 
+    const handleFileUpload = async () => {
+        if (selectedFile != null) {
+            const formData = new FormData();
+            formData.append("file", selectedFile);
 
+            try {
+                const url = `http://localhost:8080/api/v1/claims/${claimId}/docs`
+                const response = await fetch(url, {
+                    method: "POST",
+                    body: formData
+                });
 
-    function _OnSubmit(values: z.infer<typeof formSchema>) {
-        // onSubmit(values.name, values.description, values.due_date)
-        setOpen(false)
+                if (!response.ok) {
+                    const data = await response.json() as ErrorResponse;
+                    setAlertDialogTitle("Error");
+                    setAlertDialogMessage(data.message);
+                    setAlertDialogOpen(true);
+                    if (data.error) console.error(data.error);
+                    return;
+                }
+
+                setAlertDialogTitle("Success");
+                setAlertDialogMessage("File uploaded");
+                setAlertDialogOpen(true);
+                setRefresh(refresh+1);
+                reset({ file: null });
+            } catch (error: any) {
+                console.error('Error:', error);
+            }
+        }
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Button variant="outline" size="icon"><File /></Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[725px]">
-                <DialogHeader>
-                    <DialogTitle>Documents</DialogTitle>
-                </DialogHeader>
-                <div className='flex space-x-2'>
-                    <Input type="file" className='w-auto' onChange={(event) => {
-                        console.log(event.target.files && event.target.files[0])
-                    }}/>
-                    <Button variant="outline" size="icon"><Plus /></Button>
-                </div>
-                <CustomTable columns={columns} data={docs} />
-                {/* <Form {...form}>
-                    <form onSubmit={form.handleSubmit(_OnSubmit)} className="space-y-8">
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Name</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="description"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Description</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="due_date"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col">
-                                    <FormLabel>Due Date</FormLabel>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <FormControl>
-                                                <Button
-                                                    variant={"outline"}
-                                                    className={cn(
-                                                        "pl-3 text-left font-normal",
-                                                        !field.value && "text-muted-foreground"
-                                                    )}
-                                                >
-                                                    {field.value ? (
-                                                        format(field.value, "yyyy-MM-dd")
-                                                    ) : (
-                                                        <span>Pick a date</span>
-                                                    )}
-                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                                </Button>
-                                            </FormControl>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0" align="start">
-                                            <Calendar
-                                                mode="single"
-                                                selected={field.value}
-                                                onSelect={field.onChange}
-                                                disabled={(date) =>
-                                                    date < new Date("1900-01-01")
-                                                }
-                                                initialFocus
-                                            />
-                                        </PopoverContent>
-                                    </Popover>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <Button type="submit">Submit</Button>
-                    </form>
-                </Form> */}
-            </DialogContent>
-        </Dialog>
+        <>
+            <CustomAlertDialog title={alertDialogTitle} message={alertDialogMessage} open={alertDialogOpen} onOpenChange={setAlertDialogOpen} />
+            <Dialog open={open} onOpenChange={(status) => {
+                setOpen(status)
+                if (status) {
+                    setSelectedFile(null);
+                }
+            }}>
+                <DialogTrigger asChild>
+                    <Button variant="outline" size="icon"><File /></Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[725px]">
+                    <DialogHeader>
+                        <DialogTitle>Documents</DialogTitle>
+                    </DialogHeader>
+                    <div className='flex space-x-2'>
+                        <Input type="file" className='w-auto' {...register("file")} onChange={(event) => {
+                            const file = event.target.files && event.target.files[0]
+                            if (file) {
+                                setSelectedFile(file)
+                            }
+                        }} />
+                        <Button variant="outline" size="icon" onClick={handleFileUpload}><Plus /></Button>
+                    </div>
+                    <CustomTable columns={columns} data={docs} />
+                </DialogContent>
+            </Dialog>
+        </>
     )
 }
