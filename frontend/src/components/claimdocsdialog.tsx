@@ -40,7 +40,7 @@ import { ConfirmationDialog } from '@/components/confirmationdialog';
 
 
 export interface ClaimDocsDialogProps {
-    claimId: string;
+    claimId: number;
     // onSubmit: CustomDialogSubmitCallbackProps;
 }
 
