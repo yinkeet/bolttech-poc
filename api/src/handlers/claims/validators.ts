@@ -5,3 +5,7 @@ export const validateCreateClaim = [
     body('coverage_id').isInt({ gt: 0 }).withMessage('coverage_id must be an integer'),
     body('amount_claimed').isFloat({ min: 0 }).withMessage('amount_claimed must be a positive number')
 ];
+
+export const validateUpdateClaim = [
+    body('amount_claimed').isFloat({ min: 0 }).withMessage('amount_claimed must be a positive number')
+];
