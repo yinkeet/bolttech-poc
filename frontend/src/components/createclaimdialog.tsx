@@ -271,7 +271,6 @@ export function CreateClaimDialog({ onClaimCreated }: CreateClaimDialogProps) {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                    {/* <Button type="button" className="w-20" onClick={_OnSubmit}>Submit</Button> */}
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                             <FormField
