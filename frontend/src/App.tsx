@@ -100,39 +100,6 @@ function App() {
     fetchData();
   }, [refresh]);
 
-  // Create task handler
-  const onCreateClaimSubmit: CustomDialogSubmitCallbackProps = async (name, description, due_date) => {
-    try {
-      const response = await fetch('http://localhost:8080/api/v1/claims', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-          description: description,
-          due_date: formatISO(due_date)
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        setAlertDialogMessage(JSON.stringify(data, null, 2))
-        setAlertDialogOpen(true);
-        return
-      }
-
-      const data = await response.json();
-      console.log('Response data:', data);
-      setRefresh(refresh + 1)
-      toast({
-        title: "Task created"
-      })
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
-
   // Edit task handler
   const onEditTaskSubmit = async (uuid: string, name: string, description: string, due_date: Date) => {
     try {
