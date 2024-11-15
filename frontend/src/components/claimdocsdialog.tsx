@@ -81,9 +81,11 @@ export function ClaimDocsDialog({ claimId }: ClaimDocsDialogProps) {
                 return (
                     <>
                         <ConfirmationDialog title='Confirm Delete?' message='Are you sure you want to delete this?' open={open} onOpenChange={setOpen} onAction={(confirm) => {
-                            if (confirm) {
-                                
+                            if (!confirm) {
+                                return;
                             }
+
+                            handleFileRemove(row.original.id)
                         }}/>
                         <Button variant="outline" size="icon" onClick={() => {
                             setOpen(true)
@@ -151,6 +153,31 @@ export function ClaimDocsDialog({ claimId }: ClaimDocsDialogProps) {
             } catch (error: any) {
                 console.error('Error:', error);
             }
+        }
+    }
+
+    const handleFileRemove = async (docId: number) => {
+        try {
+            const url = `http://localhost:8080/api/v1/claims/${claimId}/docs/${docId}`
+            const response = await fetch(url, {
+                method: "DELETE"
+            });
+
+            if (!response.ok) {
+                const data = await response.json() as ErrorResponse;
+                setAlertDialogTitle("Error");
+                setAlertDialogMessage(data.message);
+                setAlertDialogOpen(true);
+                if (data.error) console.error(data.error);
+                return;
+            }
+
+            setAlertDialogTitle("Success");
+            setAlertDialogMessage("File removed");
+            setAlertDialogOpen(true);
+            setRefresh(refresh+1);
+        } catch (error: any) {
+            console.error('Error:', error);
         }
     }
 
